@@ -2,6 +2,7 @@ use anyhow::{Ok, Result};
 use serde::Deserialize;
 use std::fs::File;
 
+#[allow(dead_code)]
 #[derive(Debug, Deserialize)]
 struct Player {
     #[serde(rename="ID")]
@@ -17,7 +18,8 @@ struct Player {
 fn main() -> Result<()> {
     // let content = read_file("assets/demo.csv")?;
     let file = File::open("assets/demo.csv")?;
-    let mut reader = csv::Reader::from_reader(file);
+    // let mut reader = csv::Reader::from_reader(file);
+    let mut reader = csv::ReaderBuilder::new().has_headers(true).from_reader(file);
     for result in reader.deserialize() {
         let player: Player = result?;
         // println!("{:?}", player.ID);
