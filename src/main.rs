@@ -1,34 +1,34 @@
-use clap::Parser;
+use structopt::StructOpt;
 
-#[derive(Debug, Parser)]
-#[command(name="rcli", version, author, about, long_about=None)]
+#[derive(Debug, StructOpt)]
+#[structopt(name = "rcli", author, about, long_about = "")]
 struct Opts {
-    #[command(subcommand)]
+    #[structopt(subcommand)]
     cmd: SubCommand,
 }
 
-#[derive(Debug, Parser)]
+#[derive(Debug, StructOpt)]
 enum SubCommand {
-    #[command(name = "csv", about = "Show SCV, or convert CSV to other formats")]
+    #[structopt(name = "csv", about = "Show SCV, or convert CSV to other formats")]
     Csv(CsvOpts),
 }
 
-#[derive(Debug, Parser)]
+#[derive(Debug, StructOpt)]
 struct CsvOpts {
-    #[arg(short, long)]
+    #[structopt(short, long)]
     input: String,
 
-    #[arg(short, long, default_value = "output.json")]
+    #[structopt(short, long, default_value = "output.json")]
     output: String,
 
-    #[arg(short, long, default_value_t = ',')]
+    #[structopt(short, long, default_value = ",")]
     delimiter: char,
 
-    #[arg(long, default_value_t = true)]
+    #[structopt(long)]
     header: bool,
 }
 
 fn main() {
-    let opts = Opts::parse();
+    let opts = Opts::from_args();
     print!("{:?}", opts)
 }
